@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="enterButton">Enter</string>
+    <string name="ctrlButton">Ctrl</string>
+    <string name="alt">Alt</string>
+    <string name="shiftButton" >Shift</string>
+    <string name="tabButton">Tab</string>
+    <string name="escButton">Esc</string>
+    <string name="printScrButton">PrntSc</string>
+    <string name="backspaceButton">←</string>
+    <string name="deleteButton">Delete</string>
+    <string name="clearTextButton">Clear Text</string>
+    <string name="nButton">N</string>
+    <string name="tButton">T</string>
+    <string name="wButton">W</string>
+    <string name="rButton">R</string>
+    <string name="fButton">F</string>
+    <string name="zButton">Z</string>
+    <string name="cButton">C</string>
+    <string name="xButton">X</string>
+    <string name="vButton">V</string>
+    <string name="aButton">A</string>
+    <string name="oButton">O</string>
+    <string name="sButton">S</string>
+    <string name="ctrlAltTButton">Ctrl+Alt+T</string>
+    <string name="ctrlShiftZButton">Ctrl+Shift+Z</string>
+    <string name="altF4Button">Alt+F4</string>
+</resources>
