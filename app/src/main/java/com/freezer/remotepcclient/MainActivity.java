@@ -1,6 +1,5 @@
 package com.freezer.remotepcclient;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
@@ -13,8 +12,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.freezer.remotepcclient.list_bluetooth_devices.BluetoothDeviceSelect;
+import com.freezer.remotepcclient.socket_prompt.SocketPrompt;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -53,10 +54,14 @@ public class MainActivity extends AppCompatActivity {
         WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         if(wifiManager.isWifiEnabled()) {
             Log.d(TAG, "Open Socket Server input Dialog");
-            // TODO : Show Socket Server input prompt
 
-            }
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            SocketPrompt socketPrompt = new SocketPrompt();
+
+            socketPrompt.show(fragmentManager, "Enter your server");
+        }
         else {
+            Toast.makeText(getApplicationContext(), "WiFi is not enabled", Toast.LENGTH_LONG).show();
             Intent enableWifi = new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK);
             startActivityForResult(enableWifi, 1);
         }

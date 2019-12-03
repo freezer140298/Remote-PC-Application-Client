@@ -67,7 +67,7 @@ public class BluetoothRemoteActivity extends AppCompatActivity implements Naviga
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bluetooth_remote);
+        setContentView(R.layout.activity_remote);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -85,8 +85,6 @@ public class BluetoothRemoteActivity extends AppCompatActivity implements Naviga
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, TouchPadFragment.newInstance()).addToBackStack(null).commit();
 
-
-
         navigationView.setNavigationItemSelectedListener(this);
 
         btDevice = getIntent().getParcelableExtra("BTDevice");
@@ -98,7 +96,7 @@ public class BluetoothRemoteActivity extends AppCompatActivity implements Naviga
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.bluetooth_remote, menu);
+        getMenuInflater().inflate(R.menu.menu_remote, menu);
         return true;
     }
 

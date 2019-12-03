@@ -9,7 +9,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="leftclick">Left Click</string>
     <string name="rightclick">Right Click</string>
-    <string name="title_activity_bluetooth_remote">BluetoothRemoteActivity</string>
+    <string name="label_activity_bluetooth_remote">BluetoothRemoteActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Remote PC Client</string>
@@ -22,6 +22,8 @@
     <string name="menu_navigation">Navigation</string>
     <string name="available_devices">Available devices :</string>
     <string name="f5Button">F5</string>
+
+    <string name="label_activity_socket_remote">SocketRemoteActivity</string>
     <string name="greeting_socket_input_prompt">Please enter your Server configuration:</string>
     <string name="socket_server_ip_addr">Server IP Address</string>
     <string name="socket_server_port">Server Port</string>

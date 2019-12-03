@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -18,11 +19,21 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".bluetooth_remote.BluetoothRemoteActivity"
-            android:label="@string/title_activity_bluetooth_remote"
+            android:label="@string/label_activity_bluetooth_remote"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysVisible">
             <intent-filter>
                 <action android:name=".bluetooth_remote.BluetoothRemoteService"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".socket_remote.SocketRemoteActivity"
+            android:label="@string/label_activity_socket_remote"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysVisible">
+            <intent-filter>
+                <action android:name=".socket_remote.SocketRemoteService"/>
             </intent-filter>
         </activity>
 
@@ -35,6 +46,9 @@
         </activity>
         <service
             android:name=".bluetooth_remote.BluetoothRemoteService"
+            android:enabled="true"/>
+        <service
+            android:name=".socket_remote.SocketRemoteService"
             android:enabled="true"/>
     </application>
 

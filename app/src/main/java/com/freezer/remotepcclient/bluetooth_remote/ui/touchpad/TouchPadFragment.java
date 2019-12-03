@@ -32,7 +32,7 @@ public class TouchPadFragment extends Fragment{
     }
 
     private void sendCommand(String command) {
-        ((BluetoothRemoteActivity) getActivity()).sendMessage(command);
+         ((BluetoothRemoteActivity) getActivity()).sendMessage(command);
     }
 
 

@@ -4,30 +4,33 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/socketGreetingTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/greeting_socket_input_prompt" />
+        android:text="@string/greeting_socket_input_prompt"
+        android:autoSizeTextType="uniform"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/socketAddrEditText"
-        android:textAppearance="@string/socket_server_ip_addr"
+        android:hint="@string/socket_server_ip_addr"
         android:inputType="number|numberDecimal"
-        android:digits="0123456789"/>
+        android:digits="0123456789."
+        android:autofillHints="" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/socketPortEditText"
-        android:textAppearance="@string/socket_server_port"
-        android:inputType="number"/>
+        android:hint="@string/socket_server_port"
+        android:inputType="number"
+        android:autofillHints="" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/socketConnectButton"
-        android:text="@string/socket_connect_button"
-        android:onClick=""/>
+        android:text="@string/socket_connect_button" />
 
 </LinearLayout>

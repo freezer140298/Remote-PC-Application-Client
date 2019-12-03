@@ -1,6 +1,5 @@
 package com.freezer.remotepcclient.socket_remote;
 
-import android.bluetooth.BluetoothDevice;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -23,19 +22,20 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.freezer.remotepcclient.R;
+import com.freezer.remotepcclient.socket_prompt.SocketServer;
 import com.freezer.remotepcclient.socket_remote.ui.keyboard.KeyboardFragment;
 import com.freezer.remotepcclient.socket_remote.ui.navigation.NavigationFragment;
 import com.freezer.remotepcclient.socket_remote.ui.touchpad.TouchPadFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class SocketRemoteActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
-    private BluetoothDevice btDevice = null;
+    private SocketServer server;
     private SocketRemoteService socketRemoteService;
     private boolean binded = false;
 
     private AppBarConfiguration mAppBarConfiguration;
 
-    private static final String TAG = "BTRemote Activity";
+    private static final String TAG = "SocketRemote Activity";
 
     public void sendMessage(String message) {
         socketRemoteService.sendCommand(message);
@@ -43,12 +43,12 @@ public class SocketRemoteActivity extends AppCompatActivity implements Navigatio
     }
 
 
-    ServiceConnection bluetoothServiceConnection = new ServiceConnection() {
+    ServiceConnection socketServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            SocketRemoteService.LocalBluetoothRemoteServiceBinder binder = (SocketRemoteService.LocalBluetoothRemoteServiceBinder) iBinder;
+            SocketRemoteService.LocalSocketRemoteServiceBinder binder = (SocketRemoteService.LocalSocketRemoteServiceBinder) iBinder;
             socketRemoteService = binder.getService();
-            binded = false;
+            binded = true;
             Log.d(TAG, "Started");
         }
 
@@ -61,13 +61,13 @@ public class SocketRemoteActivity extends AppCompatActivity implements Navigatio
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bluetooth_remote);
+        setContentView(R.layout.activity_remote);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+
+        // Passing each menu ID as a set of Ids because each menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_touchpad, R.id.nav_keyboard)
                 .setDrawerLayout(drawer)
@@ -79,20 +79,19 @@ public class SocketRemoteActivity extends AppCompatActivity implements Navigatio
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, TouchPadFragment.newInstance()).addToBackStack(null).commit();
 
-
-
         navigationView.setNavigationItemSelectedListener(this);
 
-        btDevice = getIntent().getParcelableExtra("BTDevice");
-        Intent bluetoothServiceIntent = new Intent(this, SocketRemoteService.class);
-        bluetoothServiceIntent.putExtra("BTDevice", btDevice);
-        this.bindService(bluetoothServiceIntent,bluetoothServiceConnection, Context.BIND_AUTO_CREATE);
+        Bundle extras = getIntent().getExtras();
+        server = getIntent().getExtras().getParcelable("socketServer");
+        Intent socketServiceIntent = new Intent(this, SocketRemoteService.class);
+        socketServiceIntent.putExtra("socketServer", server);
+        this.bindService(socketServiceIntent, socketServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.bluetooth_remote, menu);
+        getMenuInflater().inflate(R.menu.menu_remote, menu);
         return true;
     }
 

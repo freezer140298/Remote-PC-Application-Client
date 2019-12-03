@@ -20,6 +20,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_bluetooth_remote" />
+    <include layout="@layout/content_remote" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

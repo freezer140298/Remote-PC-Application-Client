@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".bluetooth_remote.ui.touchpad.TouchPadFragment"
-    android:background="?android:windowBackground">
+    android:background="?android:windowBackground" >
 
     <TextView
         android:id="@+id/touchPadTextView"

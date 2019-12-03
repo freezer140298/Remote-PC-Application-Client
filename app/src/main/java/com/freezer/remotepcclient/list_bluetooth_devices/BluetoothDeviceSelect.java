@@ -29,7 +29,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.freezer.remotepcclient.R;
 import com.freezer.remotepcclient.bluetooth_remote.BluetoothRemoteActivity;
-import com.freezer.remotepcclient.bluetooth_remote.BluetoothRemoteService;
 
 import java.util.ArrayList;
 
@@ -169,7 +168,6 @@ public class BluetoothDeviceSelect extends DialogFragment{
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
-            mOnInPutListener = (OnInputListener) getActivity();
             mContext = getActivity();
         } catch (ClassCastException e) {
             e.printStackTrace();

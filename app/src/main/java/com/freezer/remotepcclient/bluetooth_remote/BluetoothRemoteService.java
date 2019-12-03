@@ -80,8 +80,8 @@ public class BluetoothRemoteService extends Service {
     public IBinder onBind(Intent intent) {
         btDevice = intent.getParcelableExtra("BTDevice");
         Log.d(TAG, "Device : " + btDevice.getName());
-        ConnectingThread connectingThread = new ConnectingThread(btDevice);
-        connectingThread.start();
+        mConnectingThread = new ConnectingThread(btDevice);
+        mConnectingThread.start();
 
         return this.binder;
     }
