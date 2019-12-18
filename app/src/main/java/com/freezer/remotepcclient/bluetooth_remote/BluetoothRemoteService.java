@@ -55,16 +55,6 @@ public class BluetoothRemoteService extends Service {
         super.onDestroy();
         // bluetoothIn.removeCallbacksAndMessages(null);
 
-        // Send EXIT_CMD to Server
-        sendCommand("EXIT_CMD");
-        stopThread = true;
-        if (mConnectedThread != null) {
-            mConnectedThread.closeStreams();
-        }
-        if (mConnectingThread != null) {
-            mConnectingThread.closeSocket();
-        }
-        Log.d(TAG, "onDestroy");
     }
 
     private final IBinder binder = new LocalBluetoothRemoteServiceBinder();
@@ -95,6 +85,18 @@ public class BluetoothRemoteService extends Service {
     @Override
     public boolean onUnbind(Intent intent) {
         Log.d(TAG, "onUnbind");
+
+        // Send EXIT_CMD to Server
+        sendCommand("EXIT_CMD");
+        stopThread = true;
+        if (mConnectedThread != null) {
+            mConnectedThread.closeStreams();
+        }
+        if (mConnectingThread != null) {
+            mConnectingThread.closeSocket();
+        }
+        Log.d(TAG, "onDestroy");
+
         return super.onUnbind(intent);
     }
 

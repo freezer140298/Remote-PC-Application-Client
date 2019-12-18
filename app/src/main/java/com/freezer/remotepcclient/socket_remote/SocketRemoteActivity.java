@@ -21,6 +21,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.freezer.remotepcclient.AboutDialog;
 import com.freezer.remotepcclient.R;
 import com.freezer.remotepcclient.socket_prompt.SocketServer;
 import com.freezer.remotepcclient.socket_remote.ui.keyboard.KeyboardFragment;
@@ -89,10 +90,29 @@ public class SocketRemoteActivity extends AppCompatActivity implements Navigatio
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.unbindService(socketServiceConnection);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_remote, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+
+        switch (itemId) {
+            case R.id.action_about : {
+                AboutDialog.showDialog(SocketRemoteActivity.this);
+                break;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -109,18 +129,18 @@ public class SocketRemoteActivity extends AppCompatActivity implements Navigatio
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         switch (id) {
-            default: case R.id.nav_touchpad :{
-                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, TouchPadFragment.newInstance()).commit();
+            case R.id.nav_touchpad :{
+                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, TouchPadFragment.newInstance()).addToBackStack(null).commit();
                 setActionBarTitile(R.string.menu_touchpad);
                 break;
             }
             case R.id.nav_keyboard :{
-                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, KeyboardFragment.newInstance()).commit();
+                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, KeyboardFragment.newInstance()).addToBackStack(null).commit();
                 setActionBarTitile(R.string.menu_keyboard);
                 break;
             }
             case R.id.nav_navigation :{
-                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, NavigationFragment.newInstance()).commit();
+                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, NavigationFragment.newInstance()).addToBackStack(null).commit();
                 setActionBarTitile(R.string.menu_navigation);
                 break;
             }

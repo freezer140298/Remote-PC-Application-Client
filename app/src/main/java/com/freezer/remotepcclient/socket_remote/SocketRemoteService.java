@@ -2,12 +2,9 @@ package com.freezer.remotepcclient.socket_remote;
 
 import android.app.Service;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
-import android.os.NetworkOnMainThreadException;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -23,6 +20,8 @@ public class SocketRemoteService extends Service {
     private static final String TAG = "SocketRemote Service";
 
     final int handlerState = 0;                        //used to identify handler message
+
+    private boolean isConnected = false;
 
     private SocketServer server;
 
@@ -53,17 +52,6 @@ public class SocketRemoteService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
-        // Send EXIT_CMD to Server
-        sendCommand("EXIT_CMD");
-        stopThread = true;
-        if (mConnectedThread != null) {
-            mConnectedThread.closeStreams();
-        }
-        if (mConnectingThread != null) {
-            mConnectingThread.closeSocket();
-        }
-        Log.d(TAG, "onDestroy");
     }
 
     private final IBinder binder = new LocalSocketRemoteServiceBinder();
@@ -95,6 +83,22 @@ public class SocketRemoteService extends Service {
     @Override
     public boolean onUnbind(Intent intent) {
         Log.d(TAG, "onUnbind");
+
+        Log.d(TAG, "DESTROY SERVICE");
+        // Send EXIT_CMD to Server
+        if (isConnected) {
+            mConnectedThread.write("EXIT_CMD");
+        }
+        stopThread = true;
+        if (mConnectedThread != null) {
+            mConnectedThread.closeStreams();
+            mConnectedThread.interrupt();
+        }
+        if (mConnectingThread != null) {
+            mConnectingThread.closeSocket();
+            mConnectingThread.interrupt();
+        }
+
         return super.onUnbind(intent);
     }
 
@@ -124,8 +128,8 @@ public class SocketRemoteService extends Service {
                 // I send a character when resuming.beginning transmission to check device is connected
                 // If it is not an exception will be thrown in the write method and finish() will be called
                 mConnectedThread.write("TEST_CONNECTION");
+                isConnected = true;
             } catch (IllegalStateException e) {
-                Toast.makeText(getApplicationContext(), "Connected thread start failed", Toast.LENGTH_LONG).show();
                 stopSelf();
             } catch (UnknownHostException e) {
                 Log.d(TAG, "SOCKET CREATION FAILED :" + e.toString());
@@ -138,7 +142,7 @@ public class SocketRemoteService extends Service {
             }
         }
 
-        public void closeSocket() {
+        private void closeSocket() {
             try {
                 mmSocket.close();
             } catch (IOException e2) {
@@ -182,7 +186,6 @@ public class SocketRemoteService extends Service {
             byte[] buffer = new byte[128];
             int bytes;
 
-            // Keep looping to listen for received messages
             while (!stopThread) {
                 try {
                     bytes = mmInStream.read(buffer);            //read bytes from input buffer
@@ -203,6 +206,11 @@ public class SocketRemoteService extends Service {
         public void write(String input) {
             SendCommand sendCommand = new SendCommand(mmOutStream, input);
             sendCommand.start();
+            try {
+                sendCommand.join();
+            } catch (InterruptedException e) {
+                Log.d(TAG, e.toString());
+            }
         }
 
         public void closeStreams() {
@@ -242,7 +250,6 @@ public class SocketRemoteService extends Service {
             } catch (IOException e) {
                 // If you cannot write, close the application
                 Log.d(TAG, "UNABLE TO READ/WRITE " + e.toString());
-                Log.d(TAG, "UNABLE TO READ/WRITE, STOPPING SERVICE");
                 stopSelf();
             } catch (NullPointerException e1) {
                 Log.d(TAG, "UNABLE TO READ/WRITE " + e1.toString());

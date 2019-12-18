@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 
+import com.freezer.remotepcclient.AboutDialog;
 import com.freezer.remotepcclient.R;
 
 import android.os.IBinder;
@@ -94,10 +95,29 @@ public class BluetoothRemoteActivity extends AppCompatActivity implements Naviga
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.unbindService(bluetoothServiceConnection);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_remote, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+
+        switch (itemId) {
+            case R.id.action_about : {
+                AboutDialog.showDialog(BluetoothRemoteActivity.this);
+                break;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

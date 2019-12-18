@@ -31,7 +31,7 @@ public class TouchPadFragment extends Fragment{
         // Required empty public constructor
     }
 
-    private void sendCommand(String command) {
+    private void sendCommand(String command) throws ClassCastException{
          ((BluetoothRemoteActivity) getActivity()).sendMessage(command);
     }
 

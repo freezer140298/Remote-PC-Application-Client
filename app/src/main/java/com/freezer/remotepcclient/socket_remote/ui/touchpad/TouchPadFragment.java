@@ -19,7 +19,7 @@ public class TouchPadFragment extends Fragment{
     private Button leftClickButton, rightClickButton;
     private TextView touchPadTextView;
     private int initX, initY, disX, disY;
-    boolean mouseMoved = false, moultiTouch = false;
+    boolean mouseMoved = false, multiTouch = false;
 
     public static TouchPadFragment newInstance() {
         TouchPadFragment fragment = new TouchPadFragment();
@@ -67,7 +67,7 @@ public class TouchPadFragment extends Fragment{
                             mouseMoved = false;
                             break;
                         case MotionEvent.ACTION_MOVE:
-                            if(moultiTouch == false) {
+                            if(multiTouch == false) {
                                 disX = (int) event.getX()- initX; //Mouse movement in x direction
                                 disY = (int) event.getY()- initY; //Mouse movement in y direction
                                 /*set init to new position so that continuous mouse movement
@@ -100,13 +100,13 @@ public class TouchPadFragment extends Fragment{
                         case MotionEvent.ACTION_POINTER_DOWN:
                             initY = (int) event.getY();
                             mouseMoved = false;
-                            moultiTouch = true;
+                            multiTouch = true;
                             break;
                         case MotionEvent.ACTION_POINTER_UP:
                             if(!mouseMoved) {
                                 sendCommand("LEFT_CLICK");
                             }
-                            moultiTouch = false;
+                            multiTouch = false;
                             break;
                     }
                 return true;

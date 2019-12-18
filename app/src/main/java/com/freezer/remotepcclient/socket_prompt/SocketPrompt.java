@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -51,17 +53,36 @@ public class SocketPrompt extends DialogFragment {
             }
         });
 
+        serverPortText.setFocusableInTouchMode(true);
+        serverPortText.requestFocus();
+
+        serverPortText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if(keyEvent.getAction() == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_ENTER){
+                    startSocketRemoteService();
+                    return true;
+                }
+                return false;
+            }
+        });
+
         return view;
     }
 
     private void startSocketRemoteService() {
-        Intent socketActivityIntent = new Intent(getActivity(), SocketRemoteActivity.class);
-        Log.d(TAG, serverAddrText.getText().toString());
-        server = new SocketServer(serverAddrText.getText().toString(), Integer.parseInt(serverPortText.getText().toString()));
+        try {
+            Intent socketActivityIntent = new Intent(getActivity(), SocketRemoteActivity.class);
+            Log.d(TAG, serverAddrText.getText().toString());
+            server = new SocketServer(serverAddrText.getText().toString(), Integer.parseInt(serverPortText.getText().toString()));
 
-        socketActivityIntent.putExtra("socketServer", server);
+            socketActivityIntent.putExtra("socketServer", server);
 
-        startActivity(socketActivityIntent);
+            startActivity(socketActivityIntent);
+        } catch (NumberFormatException e) {
+            Log.d(TAG, e.getMessage());
+            Toast.makeText(getActivity(),"Server port or address is invalid",Toast.LENGTH_SHORT).show();
+        }
     }
 
 
@@ -92,11 +113,14 @@ public class SocketPrompt extends DialogFragment {
         int width = size.x;
         int height = size.y;
 
-        greetingTextView.setHeight((int) (height * 0.08));
+        greetingTextView.setHeight((int) (height * 0.06));
+        greetingTextView.setTop(0);
         serverAddrText.setHeight((int) (height * 0.07));
         serverPortText.setHeight((int) (height * 0.07));
+        socketConnectButton.setHeight((int) (height * 0.06));
+        socketConnectButton.setBottom(0);
 
-        window.setLayout((int) (width * 0.80),(int) (height * 0.6));
+        window.setLayout((int) (width * 0.85),(int) (height * 0.4));
         window.setGravity(Gravity.CENTER);
     }
 
